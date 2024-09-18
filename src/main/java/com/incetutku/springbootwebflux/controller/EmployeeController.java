@@ -19,4 +19,10 @@ public class EmployeeController {
     public Mono<EmployeeDto> saveEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.saveEmployee(employeeDto);
     }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<EmployeeDto> getEmployeeById(@PathVariable String id) {
+        return employeeService.getEmployeeById(id);
+    }
 }
