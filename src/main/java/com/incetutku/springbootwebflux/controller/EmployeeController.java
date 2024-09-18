@@ -36,4 +36,10 @@ public class EmployeeController {
     public Mono<EmployeeDto> updateEmployee(@PathVariable String id, @RequestBody EmployeeDto employeeDto) {
         return employeeService.updateEmployee(id, employeeDto);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<Void> deleteEmployeeById(@PathVariable String id) {
+        return employeeService.deleteEmployeeById(id);
+    }
 }
