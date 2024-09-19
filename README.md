@@ -14,3 +14,9 @@ Some of the supported reactive drivers in Spring WebFlux include:
 #### Spring WebFlux supports two types of programming models:
 - Traditional annotation-based model with @Controller, @RequestMapping, and other annotations that you have been using in Spring MVC.
 - A brand new Functional style model based on Java 8 lambdas for routing and handling requests.
+
+#### WebFluxTest Annotation
+- @WebFluxTest annotation used to test Spring WebFlux controllers.
+- This annotation creates an application context that contains all the beans necessary for testing a Spring WebFlux controller.
+- @WebFluxTest used in combination with @MockBean to provide mock implementations for required collabrators.
+- @WebFluxTest also auto-configures WebTestClient, which offers a powerful way to quickly test WebFlux controllers without needing to start a full HTTP server.
