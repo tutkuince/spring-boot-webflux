@@ -2,6 +2,7 @@ package com.incetutku.springbootwebflux.integration.controller;
 
 import com.incetutku.springbootwebflux.dto.EmployeeDto;
 import com.incetutku.springbootwebflux.integration.AbstractContainerBaseTest;
+import com.incetutku.springbootwebflux.repository.EmployeeRepository;
 import com.incetutku.springbootwebflux.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +24,9 @@ public class EmployeeControllerITest extends AbstractContainerBaseTest {
     @Autowired
     private WebTestClient webTestClient;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     private EmployeeDto employeeDto;
 
     @BeforeEach
@@ -31,6 +35,8 @@ public class EmployeeControllerITest extends AbstractContainerBaseTest {
         employeeDto.setName("Tutku");
         employeeDto.setSurname("Ince");
         employeeDto.setEmail("ti@mail.com");
+
+        employeeRepository.deleteAll().subscribe();
     }
 
     @DisplayName("Integration test for Save Employee")
