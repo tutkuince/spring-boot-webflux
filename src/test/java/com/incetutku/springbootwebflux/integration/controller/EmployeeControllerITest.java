@@ -115,6 +115,7 @@ public class EmployeeControllerITest extends AbstractContainerBaseTest {
                 .jsonPath("$.email").isEqualTo(updatableEmployee.getEmail());
     }
 
+    @DisplayName("Integration test for Delete Employee By Id")
     @Test
     void testDeleteEmployeeById() {
         EmployeeDto savedEmployee = employeeService.saveEmployee(employeeDto).block();
