@@ -22,7 +22,7 @@ Some of the supported reactive drivers in Spring WebFlux include:
 - @WebFluxTest also auto-configures WebTestClient, which offers a powerful way to quickly test WebFlux controllers without needing to start a full HTTP server.
 
 #### @WebMvcTest vs @WebFluxTest
-- Spring provides @WebMvcTest annotation to test Spring MVC controllers
+- Spring provides **@WebMvcTest** annotation to test Spring MVC controllers
   - This annotation creates an application context that contains all the beans necessary for testing a Spring web controller.
-- Spring WebFlux provides @WebFluxTest annotation to test Spring WebFlux controllers.
+- Spring WebFlux provides **@WebFluxTest** annotation to test Spring WebFlux controllers.
   - This annotation creates an application context that contains all the beans necessary for testing a Spring WebFlux controller.
