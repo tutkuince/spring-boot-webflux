@@ -84,4 +84,29 @@ public class EmployeeControllerITest extends AbstractContainerBaseTest {
                 .expectBody().consumeWith(System.out::println)
                 .jsonPath("$.size()").isEqualTo(2);
     }
+
+    @DisplayName("Integration test for Update Employee By Id")
+    @Test
+    void testUpdateEmployee() {
+        EmployeeDto savedEmployee = employeeService.saveEmployee(employeeDto).block();
+
+        EmployeeDto updatableEmployee = new EmployeeDto();
+        updatableEmployee.setName("Tutku");
+        updatableEmployee.setSurname("INCE");
+        updatableEmployee.setEmail("tutkuince@mail.com");
+
+        assert savedEmployee != null;
+        WebTestClient.ResponseSpec response = webTestClient.put().uri("/api/v1/employees/{id}", Collections.singletonMap("id", savedEmployee.getId()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(updatableEmployee), EmployeeDto.class)
+                .exchange();
+
+        response.expectStatus().isOk()
+                .expectBody().consumeWith(System.out::println)
+                .jsonPath("$.name").isEqualTo(updatableEmployee.getName())
+                .jsonPath("$.surname").isEqualTo(updatableEmployee.getSurname())
+                .jsonPath("$.email").isEqualTo(updatableEmployee.getEmail());
+
+    }
 }
