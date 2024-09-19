@@ -16,6 +16,7 @@ public abstract class AbstractContainerBaseTest {
     public static void dynamicPropertySource(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.host", MONGO_DB_CONTAINER::getHost);
         registry.add("spring.data.mongodb.port", MONGO_DB_CONTAINER::getFirstMappedPort);
+        registry.add("spring.data.mongodb.uri", MONGO_DB_CONTAINER::getReplicaSetUrl);
     }
 
 }
