@@ -2,6 +2,7 @@ package com.incetutku.springbootwebflux.controller;
 
 import com.incetutku.springbootwebflux.dto.EmployeeDto;
 import com.incetutku.springbootwebflux.service.EmployeeService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -26,14 +29,20 @@ class EmployeeControllerTest {
     @MockBean
     private EmployeeService employeeService;
 
-    @DisplayName("Unit test for Save Employee Operation")
-    @Test
-    void givenEmployeeObject_whenSaveEmployee_thenReturnSavedEmployee() {
-        // given - precondition or setup
-        EmployeeDto employeeDto = new EmployeeDto();
+    private EmployeeDto employeeDto;
+
+    @BeforeEach
+    void setUp() {
+        employeeDto = new EmployeeDto();
         employeeDto.setName("Tutku");
         employeeDto.setSurname("Ince");
         employeeDto.setEmail("ti@mail.com");
+    }
+
+    @DisplayName("Unit test for Save Employee Operation")
+    @Test
+    void givenEmployeeObject_whenSaveEmployee_thenReturnSavedEmployeeObject() {
+        // given - precondition or setup
         given(employeeService.saveEmployee(any(EmployeeDto.class))).willReturn(Mono.just(employeeDto));
 
         // when - action or the behaviour that we are going to test
@@ -50,7 +59,27 @@ class EmployeeControllerTest {
                 .jsonPath("$.name").isEqualTo(employeeDto.getName())
                 .jsonPath("$.surname").isEqualTo(employeeDto.getSurname())
                 .jsonPath("$.email").isEqualTo(employeeDto.getEmail());
+    }
 
+    @DisplayName("Unit test for Get Employee By Id Operation")
+    @Test
+    void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() {
+        // given - precondition or setup
+        String employeeId = "123";
+        given(employeeService.getEmployeeById(employeeId)).willReturn(Mono.just(employeeDto));
+
+        // when - action or the behaviour that we are going to test
+        WebTestClient.ResponseSpec response = webTestClient.get()
+                .uri("/api/v1/employees/{id}", Collections.singletonMap("id", employeeId))
+                .exchange();
+
+        // then - verify the output
+        response.expectStatus().isOk()
+                .expectBody()
+                .consumeWith(System.out::println)
+                .jsonPath("$.name").isEqualTo(employeeDto.getName())
+                .jsonPath("$.surname").isEqualTo(employeeDto.getSurname())
+                .jsonPath("$.email").isEqualTo(employeeDto.getEmail());
 
     }
 }
