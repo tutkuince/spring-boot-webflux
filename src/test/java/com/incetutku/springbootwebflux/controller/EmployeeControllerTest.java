@@ -111,4 +111,46 @@ class EmployeeControllerTest {
                 .consumeWith(System.out::println)
                 .jsonPath("$.size()", employeeDtoList.size());
     }
+
+    @DisplayName("Unit test for Update Employee By Id Operation")
+    @Test
+    void givenEmployeeIdAndEmployee_whenUpdateEmployee_thenReturnUpdatedEmployeeObject() {
+        // given - precondition or setup
+        String employeeId = "123";
+        given(employeeService.updateEmployee(any(String.class), any(EmployeeDto.class))).willReturn(Mono.just(employeeDto));
+
+        // when - action or the behaviour that we are going to test
+        WebTestClient.ResponseSpec response = webTestClient.put()
+                .uri("/api/v1/employees/{id}", Collections.singletonMap("id", employeeId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(Mono.just(employeeDto), EmployeeDto.class)
+                .exchange();
+
+        // then - verify the output
+        response.expectStatus().isOk()
+                .expectBody()
+                .consumeWith(System.out::println)
+                .jsonPath("$.name").isEqualTo(employeeDto.getName())
+                .jsonPath("$.surname").isEqualTo(employeeDto.getSurname())
+                .jsonPath("$.email").isEqualTo(employeeDto.getEmail());
+    }
+
+    @DisplayName("Unit test for Delete Employee By Id Operation")
+    @Test
+    void givenEmployeeId_whenDeleteEmployeeId_thenReturnNothing() {
+        // given - precondition or setup
+        String employeeId = "123";
+        given(employeeService.deleteEmployeeById(any(String.class))).willReturn(Mono.empty());
+
+        // when - action or the behaviour that we are going to test
+        WebTestClient.ResponseSpec response = webTestClient.delete()
+                .uri("/api/v1/employees/{id}", Collections.singletonMap("id", employeeId))
+                .exchange();
+
+        // then - verify the output
+        response.expectStatus().isNoContent()
+                .expectBody()
+                .consumeWith(System.out::println);
+    }
 }
