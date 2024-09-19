@@ -107,6 +107,17 @@ public class EmployeeControllerITest extends AbstractContainerBaseTest {
                 .jsonPath("$.name").isEqualTo(updatableEmployee.getName())
                 .jsonPath("$.surname").isEqualTo(updatableEmployee.getSurname())
                 .jsonPath("$.email").isEqualTo(updatableEmployee.getEmail());
+    }
 
+    @Test
+    void testDeleteEmployeeById() {
+        EmployeeDto savedEmployee = employeeService.saveEmployee(employeeDto).block();
+
+        assert savedEmployee != null;
+        WebTestClient.ResponseSpec response = webTestClient.delete().uri("/api/v1/employees/{id}", Collections.singletonMap("id", savedEmployee.getId()))
+                .exchange();
+
+        response.expectStatus().isNoContent()
+                .expectBody().consumeWith(System.out::println);
     }
 }
